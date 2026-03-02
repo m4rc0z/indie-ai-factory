@@ -20,6 +20,9 @@ build/
 .antigravity/artifacts/*.md
 !.antigravity/artifacts/.gitkeep
 
+# Claude Code (personal overrides)
+.claude/settings.local.json
+
 # IDE
 .vscode/
 .idea/

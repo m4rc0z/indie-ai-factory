@@ -1,9 +1,20 @@
 {
     "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "command": ".claude/hooks/check-no-secrets.sh"
+            }
+        ],
         "PostToolUse": [
             {
-                "event": "file_edit",
-                "command": ".claude/hooks/post-edit.sh $FILE_PATH"
+                "matcher": "Edit",
+                "command": "npx prettier --write \"$FILEPATH\""
+            }
+        ],
+        "UserPromptSubmit": [
+            {
+                "command": ".claude/hooks/git-context.sh"
             }
         ]
     },
@@ -15,10 +26,23 @@
             "Write",
             "Bash(npm run *)",
             "Bash(npx prettier *)",
-            "Bash(git *)",
+            "Bash(npx vitest *)",
+            "Bash(npx playwright *)",
+            "Bash(git status)",
+            "Bash(git diff *)",
+            "Bash(git log *)",
+            "Bash(git add *)",
+            "Bash(git commit *)",
             "Bash(cat *)",
             "Bash(ls *)",
-            "Bash(find *)"
+            "Bash(find *)",
+            "Bash(grep *)"
+        ],
+        "deny": [
+            "Bash(rm -rf *)",
+            "Bash(sudo *)",
+            "Bash(curl * | bash)",
+            "Bash(wget * | bash)"
         ]
     }
 }

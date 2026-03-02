@@ -1,0 +1,9 @@
+{
+  "_comment": "Personal overrides. Git-ignored. Your preferred model, extra MCP servers.",
+  "model": "sonnet",
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)"
+    ]
+  }
+}
