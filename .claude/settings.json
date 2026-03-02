@@ -1,0 +1,24 @@
+{
+    "hooks": {
+        "PostToolUse": [
+            {
+                "event": "file_edit",
+                "command": ".claude/hooks/post-edit.sh $FILE_PATH"
+            }
+        ]
+    },
+    "permissions": {
+        "allow": [
+            "Read",
+            "Edit",
+            "MultiEdit",
+            "Write",
+            "Bash(npm run *)",
+            "Bash(npx prettier *)",
+            "Bash(git *)",
+            "Bash(cat *)",
+            "Bash(ls *)",
+            "Bash(find *)"
+        ]
+    }
+}

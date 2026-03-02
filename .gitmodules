@@ -1,0 +1,3 @@
+[submodule ".agent/skills/awesome-collection"]
+	path = .agent/skills/awesome-collection
+	url = https://github.com/sickn33/antigravity-awesome-skills.git

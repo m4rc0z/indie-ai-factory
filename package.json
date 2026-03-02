@@ -1,0 +1,20 @@
+{
+    "name": "indie-ai-factory",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Indie AI Factory — GitHub Template for AI-driven product development",
+    "scripts": {
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "lint": "eslint . --ext .ts,.tsx",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:e2e": "playwright test"
+    },
+    "devDependencies": {
+        "prettier": "^3.2.0"
+    }
+}
