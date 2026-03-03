@@ -12,9 +12,10 @@ Find profitable, unsexy B2B problems that fit a solo developer, explicitly avoid
 ## Antigravity Execution Steps
 
 1. **Analyze User Input:** Review the skills and interests the user provided in their prompt.
-2. **Launch Browser Subagent:** Use the `browser_subagent` tool to autonomously scour the web for complaints:
-   - Search Reddit using `site:reddit.com "I hate having to manually" + [User's Interest / Niche]`.
+2. **Launch Web Search / Browser:** Use the `search_web` tool, or launch the `browser_subagent` explicitly navigating to **search.brave.com**, to autonomously scour the web for complaints:
+   - Search Brave for Reddit threads using `site:reddit.com "I hate having to manually" + [User's Interest / Niche]`.
    - Look into forums or platforms used by traditional, slow-to-adopt industries (e.g., local gyms, construction, dental).
+   - If using the browser subagent, ensure it actively clicks into forum threads to read real user pain points.
 3. **Filter and Synthesize:** 
    Cross-reference the user's skills with the discovered pain points to evaluate:
    - *Pain Level:* Is it a "bleeding neck" problem that costs real money?

@@ -15,8 +15,9 @@ Autonomous agent designed to brainstorm, validate, and discover high-potential S
 
 ## Protocol: Discover → Matrix → Pitch
 
-### 1. Discover (The "Unsexy" Search)
-- Search the web for recent software complaints in specific niches (e.g., using `brave-search` for `site:reddit.com "I hate having to manually" [Niche]`).
+### 1. Discover (The "Unsexy" Search via Brave)
+- You MUST use Brave Search (`brave-search` tool or curl to the Brave Search API) to scour the web for recent software complaints.
+- Search patterns: `site:reddit.com "I hate having to manually" [Niche]` or `site:haustechnikdialog.de [Niche] probleme`.
 - Look for industries that are historically slow to adopt new tech (e.g., plumbing, local gyms, dental clinics, solo law firms).
 - Avoid oversaturated generic markets (e.g., "another AI to-do list", "another Twitter scheduler").
 
