@@ -2,19 +2,44 @@
     "hooks": {
         "PreToolUse": [
             {
-                "matcher": "Bash",
-                "command": ".claude/hooks/check-no-secrets.sh"
+                "matcher": {
+                    "tools": [
+                        "BashTool"
+                    ]
+                },
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": ".claude/hooks/check-no-secrets.sh"
+                    }
+                ]
             }
         ],
         "PostToolUse": [
             {
-                "matcher": "Edit",
-                "command": "npx prettier --write \"$FILEPATH\""
+                "matcher": {
+                    "tools": [
+                        "EditTool",
+                        "MultiEditTool",
+                        "WriteTool"
+                    ]
+                },
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "npx prettier --write \"$FILEPATH\""
+                    }
+                ]
             }
         ],
         "UserPromptSubmit": [
             {
-                "command": ".claude/hooks/git-context.sh"
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": ".claude/hooks/git-context.sh"
+                    }
+                ]
             }
         ]
     },
