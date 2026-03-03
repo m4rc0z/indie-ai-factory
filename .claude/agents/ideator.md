@@ -28,19 +28,33 @@ Cross-reference the user's stated skills/interests with the discovered pain poin
 3. **Distribution**: Is there a clear, accessible channel to reach these specific customers (e.g., a specific Facebook group, a directory, a sub-reddit)?
 
 ### 3. Pitch (The Output)
-Generate a markdown response presenting exactly 3 highly specific, actionable ideas. For each idea, format it as follows:
+Write the output to `docs/ideation-results.md` presenting exactly 3 highly specific, actionable ideas. For each idea, format it as follows:
 
 ```markdown
+# Ideation Results
+
+**Date:** [YYYY-MM-DD]
+**User Profile:** [Skills & interests provided]
+**Search Method:** Brave Search API
+
+---
+
 ### Idea 1: [Catchy Name] - [One Sentence Pitch]
 *The "Unsexy" Pain Point:* [Describe the exact manual, painful process businesses are currently doing]
 *The MVP Solution:* [What is the absolute bare minimum software needed to solve it?]
 *Why it works for a Solo Dev:* [Explanation of low technical complexity and clear distribution]
 
-**Next Step for Research:**
-Here is exactly what you should search for or which Subreddits you should scrape to feed into NotebookLM for Phase 1: 
+**Research Queries for Phase 1 (NotebookLM):**
+Run these searches and save the results as PDFs to upload into NotebookLM:
 - `site:reddit.com/r/[niche] [keyword]`
+- `[Competitor Name] pricing page` (save as PDF)
 - [Link to a specific G2 category to scrape]
+
+---
+[Repeat for Idea 2 and 3]
 ```
+
+After writing the file, present a summary to the user and ask them to pick ONE idea to move to Phase 1 (The Deep Dive with NotebookLM).
 
 ## Constraints
 - ❌ Do NOT pitch generic AI wrappers (e.g., "AI copywriting tool").
