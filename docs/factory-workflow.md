@@ -4,6 +4,20 @@ This document outlines the exact end-to-end process of taking an idea and turnin
 
 ---
 
+## Phase 0: Ideation (The "Unsexy" Approach)
+
+If you have the technical skills but **no idea** what to build, don't just guess. Use the Indie AI Factory's built-in Ideator agent to find profitable, unsexy B2B problems.
+
+1. **Start Claude Code** in your template directory.
+2. **Run the Ideate Command:** Tell the agent your skills or interests.
+   ```bash
+   /ideate "I know Next.js, Node, and have an interest in local fitness gyms and personal trainers."
+   ```
+3. **The Output:** The Ideator will search the web for complaints on Reddit and niche forums. It will give you 3 highly specific, "boring" B2B SaaS ideas that are perfect for solo developers (no generic AI wrappers).
+4. **The Hand-off:** Crucially, it will also give you the *exact Google/Brave search queries* you need to run to gather the PDFs for Phase 1.
+
+---
+
 ## Phase 1: Research & "The Bible" (Idea to Spec)
 
 Before writing any code, the idea must be validated and structured into our strictly formatted `docs/project-spec.md`. You have two powerful ways to do this:
