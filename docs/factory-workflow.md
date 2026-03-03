@@ -6,15 +6,30 @@ This document outlines the exact end-to-end process of taking an idea and turnin
 
 ## Phase 0: Ideation (The "Unsexy" Approach)
 
-If you have the technical skills but **no idea** what to build, don't just guess. Use the Indie AI Factory's built-in Ideator agent to find profitable, unsexy B2B problems.
+## Phase 0: Ideation (The "Unsexy" Approach)
 
-1. **Start Claude Code** in your template directory.
-2. **Run the Ideate Command:** Tell the agent your skills or interests.
+If you have the technical skills but **no idea** what to build, don't just guess. The Indie AI Factory provides two built-in Ideators to find profitable, unsexy B2B problems before you start your research.
+
+### Option A: Antigravity IDE Workflow (Recommended)
+This is the recommended approach because Antigravity has full access to the web via its browser subagent, and it **does not consume your Claude Code tokens**.
+
+1. In your IDE chat (Cursor/VS Code) with Antigravity, trigger the workflow:
+   ```text
+   Run the workflow /ideation. I know Next.js, Node, and have an interest in local fitness gyms and personal trainers.
+   ```
+2. Antigravity will launch a browser subagent, actively scrape Reddit and forums for you, and output 3 validated ideas with precise search queries for Phase 1.
+
+### Option B: Claude Code Slash Command
+If you prefer to stay entirely in the terminal, you can use the Claude Code Ideator agent.
+
+1. Start `claude` in your template directory.
+2. Run the Ideate Command:
    ```bash
    /ideate "I know Next.js, Node, and have an interest in local fitness gyms and personal trainers."
    ```
-3. **The Output:** The Ideator will search the web for complaints on Reddit and niche forums. It will give you 3 highly specific, "boring" B2B SaaS ideas that are perfect for solo developers (no generic AI wrappers).
-4. **The Hand-off:** Crucially, it will also give you the *exact Google/Brave search queries* you need to run to gather the PDFs for Phase 1.
+
+**The Handoff:**
+Regardless of which option you choose, the output will give you 3 highly specific, "boring" B2B SaaS ideas, plus the *exact Google/Brave search queries* you need to run to gather the PDFs for Phase 1 NotebookLM gathering.
 
 ---
 
