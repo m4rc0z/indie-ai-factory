@@ -5,19 +5,21 @@ This document outlines the exact end-to-end process of taking a vague interest a
 **The Golden Rule:** Each phase produces a specific artifact that feeds the next. Never skip a phase. Never start coding before the spec is battle-tested.
 
 ```
-Phase 0: Ideation          → Output: docs/ideation-results.md (3 raw ideas + search queries)
+Phase 0: Ideation           → Output: docs/ideation-results.md (3 raw ideas)
     ↓ (You pick ONE idea)
-Phase 1: The Deep Dive      → Output: docs/validation-report.md (GO / NO-GO)
+Phase 0.5: Source Scout      → Output: docs/source-shopping-list.md (exact URLs + keywords)
+    ↓ (You load sources into NotebookLM)
+Phase 1: The Deep Dive       → Output: docs/validation-report.md (GO / NO-GO)
     ↓ (If GO)
-Phase 2: The Bible           → Output: docs/project-spec.md (100% complete)
+Phase 2: The Bible            → Output: docs/project-spec.md (100% complete)
     ↓
-Phase 3: Factory Setup       → Clone template, ./setup.sh
+Phase 3: Factory Setup        → Clone template, ./setup.sh
     ↓
-Phase 4: Architecture        → Output: architecture.md + schema.sql
+Phase 4: Architecture         → Output: architecture.md + schema.sql
     ↓
-Phase 5: The Night Mission   → Antigravity builds the MVP
+Phase 5: The Night Mission    → Antigravity builds the MVP
     ↓
-Phase 6: The Daily Loop      → Iterate & Ship
+Phase 6: The Daily Loop       → Iterate & Ship
 ```
 
 ---
@@ -60,8 +62,38 @@ Example output search queries:
 
 ### Your Action After Phase 0
 1. Read your 3 ideas. **Pick the ONE that excites you most.**
-2. Run the search queries the Ideator gave you. Save the results (Reddit threads, competitor websites, G2 reviews) as PDFs or text files.
-3. Move to Phase 1.
+2. Move to Phase 0.5 (Source Scout).
+
+---
+
+## Phase 0.5: Source Scout (AI Finds Your Sources)
+
+**Goal:** Tell the AI your chosen idea. It finds the exact competitors, Reddit threads, and keywords you need to load into NotebookLM.
+
+**You do NOT need to know what to search for. The AI does it for you.**
+
+### Run the Source Scout
+
+In your IDE chat (Cursor/VS Code), tell Antigravity:
+```text
+Run the workflow /source-scout. My idea: A lead-qualification tool for German landscapers that filters out tire-kicker customers before the owner drives to the appointment.
+```
+
+### The Output
+
+Antigravity searches Brave for competitors, Reddit complaints, and market data. It writes `docs/source-shopping-list.md` containing:
+- **Exact competitor URLs** (homepage + pricing page) to add as sources
+- **Exact Reddit/forum thread URLs** with real user complaints
+- **Market data links** (blog posts, G2 categories)
+- **Keywords** to use in NotebookLM's built-in source search feature
+
+### Your Action After Phase 0.5
+1. Open [NotebookLM](https://notebooklm.google.com/) → Create a new notebook.
+2. Walk through the shopping list and add each source:
+   - For **URLs**: Paste directly into NotebookLM's "Add Source" (it can import web pages).
+   - For **PDFs**: Open the URL, `CMD+P` → Save as PDF, then upload.
+   - For **Keywords**: Use NotebookLM's search feature to find additional sources.
+3. Once all sources are loaded, move to Phase 1.
 
 ---
 
@@ -69,30 +101,26 @@ Example output search queries:
 
 **Goal:** Grill, validate, and stress-test your chosen idea until it's either confirmed as viable (GO) or killed (NO-GO).
 
-This phase has two sub-steps: first you build a "knowledge base" in NotebookLM, then you unleash the Researcher Agent on it.
+Your NotebookLM notebook is now loaded with the sources from Phase 0.5. Time to extract insights and stress-test the idea.
 
-### Step 1.1: Build Your NotebookLM Knowledge Base
+### Step 1.1: Interactive Exploration (You + NotebookLM)
 
-NotebookLM is Google's RAG system. It does NOT hallucinate because it only answers based on documents YOU provide. This makes it perfect for grounding your research in facts.
+Your NotebookLM notebook is loaded with sources from Phase 0.5. Now use it as your personal analyst to sharpen the idea.
 
-1. **Open [NotebookLM](https://notebooklm.google.com/)** → Create a new notebook for your idea.
-2. **Upload everything you gathered in Phase 0:**
-   - PDFs of competitor websites (pricing pages, feature lists, about pages)
-   - Copied Reddit threads where users complain about existing solutions
-   - G2/Capterra review pages saved as PDFs
-   - Any industry reports or blog posts about the niche
-3. **Let NotebookLM pre-digest the material:**
+NotebookLM does NOT hallucinate — it only answers based on your uploaded documents. This makes it perfect for grounding your research in facts.
+
+1. **Let NotebookLM pre-digest the material:**
    - Ask it: *"Summarize the top 3 competitor products and their biggest weaknesses."*
    - Ask it: *"What are the top 5 unresolved pain points across all the Reddit threads?"*
    - Ask it: *"Is there a gap that none of the competitors are addressing?"*
-4. **Sharpen your idea by grilling it:**
+2. **Sharpen your idea by grilling it:**
    - *"Based on ALL sources: Would a solo developer tool that does X be viable? What's missing?"*
    - *"What would a customer need to see in a landing page to switch from [Competitor] to this?"*
    - *"What is the simplest possible pricing model for this, based on what competitors charge?"*
-5. **Click Share → "Anyone with link" → Copy the link.**
+3. **Click Share → "Anyone with link" → Copy the link.**
 
-> **Why NotebookLM before the Researcher Agent?**
-> NotebookLM lets you interactively explore your data. You ask follow-up questions, spot patterns, and refine your thesis. This human-in-the-loop exploration produces a much sharper "brief" for the autonomous agent in Step 1.2.
+> **Why this interactive step before the Researcher Agent?**
+> NotebookLM lets you explore your data conversationally. You spot patterns, ask follow-ups, and refine your thesis. This produces a much sharper brief for the autonomous agent in Step 1.2.
 
 ### Step 1.2: Autonomous Validation (Researcher Agent)
 
@@ -227,7 +255,8 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
 | Phase | Tool | Input | Output |
 |:------|:-----|:------|:-------|
 | 0: Ideation | Antigravity `/ideation` or Claude `/ideate` | Your skills + interests | `docs/ideation-results.md` |
-| 1: Deep Dive | NotebookLM + Claude `/research` | PDFs + idea from Phase 0 | `docs/validation-report.md` |
+| 0.5: Source Scout | Antigravity `/source-scout` | Your chosen idea | `docs/source-shopping-list.md` |
+| 1: Deep Dive | NotebookLM + Claude `/research` | NotebookLM link (loaded with sources) | `docs/validation-report.md` |
 | 2: The Bible | Researcher Agent (auto) + Human review | Validation report | `docs/project-spec.md` |
 | 3: Setup | `./setup.sh` | Template repo | Initialized project |
 | 4: Architecture | Claude Code | `project-spec.md` | `architecture.md` + `schema.sql` |
