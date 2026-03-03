@@ -12,4 +12,4 @@ Internally, this invokes the **Researcher** agent which uses MCP tools (like bra
 ```
 
 **Instructions to Claude:**
-Invoke the Researcher agent (`/agent researcher`) and pass the user's idea (and NotebookLM link, if provided) to it to start the autonomous research protocol. If a link is provided, use the NotebookLM skill to extract data instead of web searching. Ensure it writes the final output to `docs/project-spec.md`.
+Invoke the Researcher agent (`/agent researcher`) and pass the user's idea (and NotebookLM link, if provided) to it to start the autonomous research protocol. If a link is provided, use the NotebookLM skill to extract data instead of web searching. Ensure it first writes a critical analysis to `docs/validation-report.md` and then the final actionable spec to `docs/project-spec.md`.
