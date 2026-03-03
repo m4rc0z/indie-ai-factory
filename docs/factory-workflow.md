@@ -129,7 +129,7 @@ Now that you've pre-digested the material in NotebookLM, unleash the **Researche
 **Option A: With NotebookLM Link (Recommended)**
 ```bash
 claude
-> /agent researcher "A lead-qualification tool for German landscapers. NotebookLM: https://notebooklm.google.com/notebook/YOUR_ID"
+> Führe den Prozess in .claude/commands/research.md aus. Meine Idee: "A lead-qualification tool for German landscapers." NotebookLM: https://notebooklm.google.com/notebook/YOUR_ID
 ```
 
 The Researcher Agent will:
@@ -146,7 +146,7 @@ The Researcher Agent will:
 **Option B: Web-Only (No NotebookLM)**
 ```bash
 claude
-> /agent researcher "A lead-qualification tool for German landscapers."
+> Führe den Prozess in .claude/commands/research.md aus. Meine Idee: "A lead-qualification tool for German landscapers."
 ```
 The agent will use Brave Search MCP exclusively to find competitors, pricing, and pain points.
 
