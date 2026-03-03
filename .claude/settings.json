@@ -1,48 +1,4 @@
 {
-    "hooks": {
-        "PreToolUse": [
-            {
-                "matcher": {
-                    "tools": [
-                        "BashTool"
-                    ]
-                },
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": ".claude/hooks/check-no-secrets.sh"
-                    }
-                ]
-            }
-        ],
-        "PostToolUse": [
-            {
-                "matcher": {
-                    "tools": [
-                        "EditTool",
-                        "MultiEditTool",
-                        "WriteTool"
-                    ]
-                },
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "npx prettier --write \"$FILEPATH\""
-                    }
-                ]
-            }
-        ],
-        "UserPromptSubmit": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": ".claude/hooks/git-context.sh"
-                    }
-                ]
-            }
-        ]
-    },
     "permissions": {
         "allow": [
             "Read",
