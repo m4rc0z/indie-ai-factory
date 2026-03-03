@@ -187,23 +187,40 @@ Once the spec ("The Bible") is ready, you start the machine.
    ```bash
    ./setup.sh
    ```
-   *(Pulls the skills, installs dependencies, builds the `.env.local` template.)*
+   *(Pulls the skills, makes hooks executable, creates `.env.local` template.)*
 5. **Copy your finished `project-spec.md` and `validation-report.md` into the `docs/` folder.**
+
+> **Note:** Dependencies are NOT installed yet. The Architect Agent in Phase 4 will first select the optimal tech stack for your project.
 
 ---
 
-## Phase 4: Architecture & Foundation (Claude Code)
+## Phase 4: Architecture & Tech Selection (Claude Code + Architect Agent)
 
-Use *Claude Code* (`claude` in the terminal) for the extremely fast, token-efficient setup of the data model and architecture.
+This is where the magic happens. The **Architect Agent** reads your project spec and makes all technology decisions — optimizing for **cost-efficiency**, **solo-dev maintainability**, and **time-to-market**.
+
+> **Why not hardcode the tech stack?** Every project is different. A simple lead-gen form doesn't need the same stack as a real-time dashboard. The Architect Agent evaluates your specific needs and picks the best tools.
 
 1. **Start Claude Code:**
    ```bash
    claude
    ```
-2. **Plan Architecture:**
-   `"Read docs/project-spec.md. Write a technical architecture plan (Route structure, Supabase tables, n8n webhooks) into a new file .antigravity/artifacts/architecture.md. Adhere to our stack defined in CLAUDE.md."`
-3. **Generate Database Schema:**
-   `"Based on architecture.md, create the SQL schema for Supabase under supabase/schema.sql including RLS Policies."`
+2. **Run the Architect Agent:**
+   ```
+   /agent architect "Read docs/project-spec.md. Design the architecture and select the optimal tech stack for this project."
+   ```
+3. **What happens automatically:**
+   - Reads your project spec and validation report
+   - Selects the best framework, database, payment provider, and deployment platform
+   - Documents the rationale and **estimated monthly costs** for each choice
+   - Writes `architecture.md` with route structure, database schema (ERD), and API contracts
+   - Generates `schema.sql` with access policies
+   - **Updates `CLAUDE.md`** with chosen tech stack, commands, and folder structure
+   - **Updates `package.json`** with correct scripts
+4. **Install dependencies (after Architect finishes):**
+   ```bash
+   npm install
+   ```
+5. **Review:** Read `.antigravity/artifacts/architecture.md` — Does the cost analysis make sense? Are the tech choices justified?
 
 ---
 
@@ -218,7 +235,7 @@ Once the architecture and spec are ready, **Antigravity** takes over the heavy l
    ```
 2. **What happens next?**
    - Antigravity writes its own `task_plan.md`.
-   - Builds the Design System (colors, Tailwind).
+   - Builds the Design System (colors, styling).
    - Iteratively generates all components and pages.
    - Executes auto-commits and visually validates the UX.
    - You go to bed or grab a coffee. ☕
@@ -241,7 +258,7 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
   ```
 - **Get Code Reviews:**
   ```bash
-  /agent reviewer "Check if the new Stripe webhook route is secure."
+  /agent reviewer "Check if the new payment webhook route is secure."
   ```
 - **Evening (Handoff):**
   ```bash
@@ -258,8 +275,8 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
 | 0.5: Source Scout | Antigravity `/source-scout` | Your chosen idea | `docs/source-shopping-list.md` |
 | 1: Deep Dive | NotebookLM + Claude `/research` | NotebookLM link (loaded with sources) | `docs/validation-report.md` |
 | 2: The Bible | Researcher Agent (auto) + Human review | Validation report | `docs/project-spec.md` |
-| 3: Setup | `./setup.sh` | Template repo | Initialized project |
-| 4: Architecture | Claude Code | `project-spec.md` | `architecture.md` + `schema.sql` |
+| 3: Setup | `./setup.sh` | Template repo | Initialized project (no deps yet) |
+| 4: Architecture | Claude `/agent architect` | `project-spec.md` | `architecture.md` + `schema.sql` + updated `CLAUDE.md` |
 | 5: Night Mission | Antigravity `/night-mission` | Spec + Architecture | Working MVP |
 | 6: Daily Loop | Claude Code + Antigravity | Feature tickets | Production app |
 

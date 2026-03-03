@@ -19,33 +19,26 @@ git submodule update --init --recursive 2>/dev/null || {
   git clone https://github.com/sickn33/antigravity-awesome-skills.git .agent/skills/awesome-collection
 }
 
-# 2. Install npm dependencies
-echo -e "${YELLOW}📦 Installing npm dependencies...${NC}"
-npm install
-
-# 3. Make hooks executable
+# 2. Make hooks executable
 echo -e "${YELLOW}🔧 Making hooks executable...${NC}"
-chmod +x .claude/hooks/post-edit.sh
+chmod +x .claude/hooks/*.sh 2>/dev/null || true
 
-# 4. Create .env from template
+# 3. Create .env from template (minimal, stack-agnostic)
 if [ ! -f .env.local ]; then
   echo -e "${YELLOW}📝 Creating .env.local template...${NC}"
   cat > .env.local << 'EOF'
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+# Database (filled after Phase 4: Architecture)
+DATABASE_URL=
 
-# Stripe
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+# Payments (filled after Phase 4: Architecture)
+# STRIPE_SECRET_KEY=
+# STRIPE_WEBHOOK_SECRET=
 
 # n8n
 N8N_WEBHOOK_URL=
 
 # App
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+APP_URL=http://localhost:3000
 EOF
 fi
 
@@ -53,7 +46,9 @@ echo ""
 echo -e "${GREEN}✅ Setup complete!${NC}"
 echo ""
 echo "Next steps:"
-echo "  1. Fill docs/project-spec.md with your project details"
-echo "  2. Update .env.local with your API keys"
-echo "  3. Run: /night-mission [your objective]"
+echo "  1. Copy your docs/project-spec.md and docs/validation-report.md"
+echo "  2. Run Phase 4 (Architecture):  claude → /agent architect \"Read docs/project-spec.md. Design the architecture and select the optimal tech stack.\""
+echo "  3. The Architect Agent will select your tech stack, update CLAUDE.md, and generate schema.sql"
+echo "  4. Install dependencies:  npm install"
+echo "  5. Start Night Mission:  /night-mission [your objective]"
 echo ""

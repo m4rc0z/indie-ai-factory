@@ -1,41 +1,47 @@
 # CLAUDE.md — Layer 1: Persistent Memory
 
 > This file is automatically loaded by Claude Code on every session.
-> It defines the project's tech stack, coding standards, and operational rules.
+> It defines project-agnostic coding standards, operational rules, and the tech selection process.
 > **Rule**: Only add new rules when Claude makes the same mistake twice. No premature rules.
 
 ---
 
 ## 🏗️ Tech Stack
 
-| Layer | Technology | Version |
+> **This section is populated by the Architect Agent in Phase 4.**
+> The template ships stack-agnostic. The `/agent architect` chooses the optimal technologies
+> based on the project's `docs/project-spec.md` — optimizing for **cost-efficiency**, **solo-dev maintainability**, and **time-to-market**.
+
+| Layer | Technology | Chosen Because |
 | :--- | :--- | :--- |
-| **Framework** | Next.js (App Router) | 14+ |
-| **Language** | TypeScript | 5.x |
-| **Styling** | Tailwind CSS | v4 |
-| **Backend/DB** | Supabase (Postgres + Auth + Storage) | Latest |
-| **Payments** | Stripe (Checkout + Webhooks) | Latest |
-| **Automation** | n8n (Webhooks only) | Self-hosted |
-| **Testing** | Playwright (E2E) + Vitest (Unit) | Latest |
-| **Deployment** | Vercel | Latest |
+| **Framework** | _TBD by Architect_ | — |
+| **Language** | _TBD by Architect_ | — |
+| **Styling** | _TBD by Architect_ | — |
+| **Backend/DB** | _TBD by Architect_ | — |
+| **Payments** | _TBD by Architect_ | — |
+| **Automation** | n8n (Webhooks only) | Self-hosted, already in stack |
+| **Testing** | _TBD by Architect_ | — |
+| **Deployment** | _TBD by Architect_ | — |
 
 ## 📋 Commands
 
+> **Updated by the Architect Agent after tech selection.**
+
 ```bash
 # Development
-npm run dev          # Start dev server (Next.js)
+npm run dev          # Start dev server
 npm run build        # Production build
 npm run start        # Start production server
 
 # Testing
-npm run test         # Run unit tests (Vitest)
+npm run test         # Run unit tests
 npm run test:watch   # Watch mode
-npm run test:e2e     # Run E2E tests (Playwright)
+npm run test:e2e     # Run E2E tests
 
 # Quality
-npm run lint         # ESLint
-npm run format       # Prettier --write
-npm run format:check # Prettier --check
+npm run lint         # Linter
+npm run format       # Formatter --write
+npm run format:check # Formatter --check
 ```
 
 ---
@@ -45,34 +51,19 @@ npm run format:check # Prettier --check
 ### File Naming
 - Components: `PascalCase.tsx` (e.g., `PricingCard.tsx`)
 - Utilities: `camelCase.ts` (e.g., `formatDate.ts`)
-- API Routes: `route.ts` in nested folder (e.g., `app/api/webhooks/stripe/route.ts`)
+- API Routes: Framework-specific (e.g., `route.ts` for Next.js, `+server.ts` for SvelteKit)
 - Types: `types.ts` co-located with feature
 
 ### Architecture
-```
-src/
-├── app/              # Next.js App Router pages
-│   ├── (auth)/       # Auth-related routes
-│   ├── (dashboard)/  # Protected routes
-│   ├── api/          # API routes
-│   └── layout.tsx    # Root layout
-├── components/       # Shared UI components
-│   ├── ui/           # Primitives (Button, Input, Card)
-│   └── features/     # Feature-specific components
-├── lib/              # Business logic & utilities
-│   ├── supabase/     # Supabase client & helpers
-│   ├── stripe/       # Stripe integration
-│   └── utils/        # Generic utilities
-├── hooks/            # Custom React hooks
-└── types/            # TypeScript type definitions
-```
+> The folder structure is defined by the Architect Agent based on the chosen framework.
+> It will be documented here after Phase 4.
 
 ### Code Rules
-1. **Server Components by default** — Use `'use client'` only when needed.
+1. **Server-first by default** — Minimize client-side JavaScript.
 2. **No `any` types** — Use `unknown` and type guards instead.
-3. **Error boundaries** — Every page gets an `error.tsx`.
-4. **Loading states** — Every page gets a `loading.tsx`.
-5. **Zod validation** — All API inputs validated with Zod.
+3. **Error handling** — Every page/route needs proper error boundaries.
+4. **Loading states** — Every data-fetching page needs loading feedback.
+5. **Input validation** — All API inputs validated (Zod, Valibot, or equivalent).
 
 ---
 
@@ -82,9 +73,9 @@ Use this pattern for every Claude Code task:
 
 | Part | Purpose | Example |
 | :--- | :--- | :--- |
-| **WHAT** | What needs to happen | "Implement Stripe checkout session creation" |
-| **WHERE** | Which files/modules | "src/lib/stripe/checkout.ts" |
-| **HOW** | Constraints, conventions | "Use skill stripe-api.md. Follow Stripe Checkout guide." |
+| **WHAT** | What needs to happen | "Implement payment checkout session" |
+| **WHERE** | Which files/modules | "src/lib/payments/checkout.ts" |
+| **HOW** | Constraints, conventions | "Use the chosen payment provider. Follow their SDK guide." |
 | **VERIFY** | How to confirm success | "npm run build && npm run test" |
 
 **Bad prompt**: "Fix the auth bug"
@@ -101,9 +92,9 @@ Use this pattern for every Claude Code task:
 - **No cycle** = Claude writes blind = Dramatic quality drop
 
 **Rules**:
-1. Keep `npm run test` fast. Split slow tests into a separate suite.
-2. Use `vitest` (fast) over `jest` (slow) for unit tests.
-3. Run only affected tests during development: `vitest --reporter=dot --run path/to/file.test.ts`
+1. Keep unit tests fast. Split slow tests into a separate suite.
+2. Prefer fast test runners (Vitest > Jest).
+3. Run only affected tests during development.
 
 ---
 
@@ -125,7 +116,7 @@ Use this pattern for every Claude Code task:
 
 | Task | Code It? | n8n It? |
 | :--- | :--- | :--- |
-| Stripe webhook processing | ✅ `route.ts` | ❌ |
+| Payment webhook processing | ✅ API route | ❌ |
 | Welcome emails | ❌ | ✅ |
 | Slack/Discord notifications | ❌ | ✅ |
 | Scheduled reports | ❌ | ✅ |
@@ -134,27 +125,15 @@ Use this pattern for every Claude Code task:
 
 **Pattern**: Build a webhook endpoint in your app → trigger n8n workflow → n8n handles the rest.
 
-```typescript
-// src/app/api/webhooks/n8n/route.ts
-export async function POST(req: Request) {
-  const payload = await req.json();
-  await fetch(process.env.N8N_WEBHOOK_URL!, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
-  return Response.json({ ok: true });
-}
-```
-
 ---
 
 ## 🔒 Security Checklist
 
-- [ ] Supabase RLS enabled on ALL tables
-- [ ] API routes validate auth via `getUser()`
-- [ ] Stripe webhooks verified with `constructEvent()`
+- [ ] Database row-level security / access policies enabled
+- [ ] API routes validate authentication
+- [ ] Payment webhooks verified with signature checks
 - [ ] Environment variables in `.env.local` (never committed)
-- [ ] CSP headers configured in `next.config.js`
+- [ ] Security headers configured (CSP, etc.)
 - [ ] Rate limiting on public API endpoints
 
 ---
