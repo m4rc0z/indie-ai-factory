@@ -18,11 +18,16 @@ You must have an MCP server or CLI tools configured that allow web searching (e.
 
 ## Protocol: Discover → Synthesize → Format
 
-### 1. Discover (Web Search Protocol)
-- **Competitor Search:** Search the web for `"[Your Idea/Niche] software"`, `"[Your Idea] saas"`. Identify the top 3-5 competitors.
-- **Pricing Analysis:** Search for `"[Competitor Name] pricing"`. Note their tiers, limitations, and value metrics.
-- **Pain Point Discovery:** Search Reddit/forums using `site:reddit.com alternative to [Competitor Name]` or `"[Competitor Name] sucks because"`. Extract what users genuinely hate or find missing.
-- **Trend Validation:** Look up recent articles or discussions validating the urgency of the problem.
+### 1. Discover (Web Search & NotebookLM Protocol)
+- **If a NotebookLM link is provided:** 
+  - Stop web searching immediately. 
+  - Use the `notebooklm` skill (if installed) to query the provided notebook link exhaustively. 
+  - Ask follow-up questions iteratively until you fully understand the market, the competitors, and the pain points documented in the notebook.
+- **If NO NotebookLM link is provided (Web Search mode):**
+  - **Competitor Search:** Search the web for `"[Your Idea/Niche] software"`, `"[Your Idea] saas"`. Identify the top 3-5 competitors.
+  - **Pricing Analysis:** Search for `"[Competitor Name] pricing"`. Note their tiers, limitations, and value metrics.
+  - **Pain Point Discovery:** Search Reddit/forums using `site:reddit.com alternative to [Competitor Name]` or `"[Competitor Name] sucks because"`. Extract what users genuinely hate or find missing.
+  - **Trend Validation:** Look up recent articles or discussions validating the urgency of the problem.
 
 ### 2. Synthesize (The 'Unfair Advantage')
 - Compare the competitors' weaknesses against the core idea.

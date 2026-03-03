@@ -8,21 +8,26 @@ This document outlines the exact end-to-end process of taking an idea and turnin
 
 Before writing any code, the idea must be validated and structured into our strictly formatted `docs/project-spec.md`. You have two powerful ways to do this:
 
-### Option A: The Deep Dive Approach (NotebookLM)
-NotebookLM acts as your strategic co-founder. Because it grounds its answers strictly in the documents you provide, it is perfect for synthesizing chaotic market data into a clean spec.
+### Option A: The NotebookLM Skill Approach (Autonomous Synthesizing)
+NotebookLM acts as your strategic co-founder. Because it grounds its answers strictly in the documents you provide (zero hallucinations), it is perfect for synthesizing chaotic market data into a clean spec.
 
-1. **Source Gathering:** 
+To use this within the Indie AI Factory, we leverage the **[NotebookLM Claude Code Skill](https://github.com/PleasePrompto/notebooklm-skill)**.
+
+1. **Source Gathering (Manual Step):** 
    - Save as PDFs: Websites of 3-5 competitors, pricing pages, feature lists.
    - Copy top Reddit threads or Hacker News discussions about the specific problem.
    - Upload everything into a new [NotebookLM](https://notebooklm.google.com/) project.
-2. **Initial Prompt:**
-   - Upload the empty `docs/project-spec.md` template to NotebookLM or paste its structure into the chat.
-   - *Prompt:* `"Based on our sources, fill out this Project Spec Template completely. Analyze our competitors and find our 'Unfair Advantage'. Be very specific about the Revenue Model and the Go-to-Market Strategy."*
-3. **The "Grilling" Session (Refinement):**
-   - Don't accept the first draft immediately. "Grill" the notebook:
-   - *Prompt 1:* `"Is the pricing model realistic compared to the competitors in the document? What is the willingness to pay of the cited Reddit users?"*
-   - *Prompt 2:* `"The Go-to-Market strategy is too generic. How do we get our first 10 customers in week 1 with a $0 budget based on the sources?"*
-   - *Prompt 3:* `"Create a detailed feature counter-proposal to [Competitor X]. What can we omit in V1 to launch faster?"*
+   - Click **Share → "Anyone with link" → Copy link**.
+2. **Install Skill & Authenticate (One-time):**
+   ```bash
+   # In your project folder:
+   claude
+   > "Install the notebooklm skill from https://github.com/PleasePrompto/notebooklm-skill"
+   > "Log me in to NotebookLM" # Opens a window to auth
+   ```
+3. **The Autonomous Generation Prompt:**
+   - Put Claude Code to work. It will recursively query NotebookLM until the spec is perfect.
+   - *Prompt:* `"Here is my NotebookLM link: [LINK]. Read the docs/project-spec.md template. Ask NotebookLM everything you need to know about the competitors and our 'Unfair Advantage'. Iterate until you have enough data, then write the final output directly into docs/project-spec.md."*
 
 ### Option B: The Autonomous Approach (Claude Desktop/Code + MCP)
 If you don't want to gather sources manually, let an AI with **MCP (Model Context Protocol)** scour the web for you and write the spec autonomously.

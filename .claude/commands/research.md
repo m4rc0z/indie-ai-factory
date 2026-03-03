@@ -7,7 +7,9 @@ Internally, this invokes the **Researcher** agent which uses MCP tools (like bra
 **Usage:**
 ```bash
 /research "A SaaS for dog walkers to manage their schedule and billing"
+# OR with a NotebookLM knowledge base:
+/research "A SaaS for dog walkers" "https://notebooklm.google.com/notebook/..."
 ```
 
 **Instructions to Claude:**
-Invoke the Researcher agent (`/agent researcher`) and pass the user's idea to it to start the autonomous research protocol. Ensure it writes the final output to `docs/project-spec.md`.
+Invoke the Researcher agent (`/agent researcher`) and pass the user's idea (and NotebookLM link, if provided) to it to start the autonomous research protocol. If a link is provided, use the NotebookLM skill to extract data instead of web searching. Ensure it writes the final output to `docs/project-spec.md`.
