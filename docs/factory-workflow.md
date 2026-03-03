@@ -12,113 +12,113 @@ Before writing any code, the idea must be validated and structured into our stri
 NotebookLM acts as your strategic co-founder. Because it grounds its answers strictly in the documents you provide, it is perfect for synthesizing chaotic market data into a clean spec.
 
 1. **Source Gathering:** 
-   - Speichere als PDF ab: Websites von 3-5 Konkurrenten, Pricing Pages, Feature-Listen.
-   - Kopiere Top-Reddit-Threads oder Hacker News Diskussionen über das konkrete Problem.
-   - Lade alles in ein neues [NotebookLM](https://notebooklm.google.com/) Projekt.
-2. **Initialer Prompt:**
-   - Lade das leere `docs/project-spec.md` Template in NotebookLM hoch oder füge die Struktur in den Chat ein.
-   - *Prompt:* `"Basierend auf unseren Quellen, fülle dieses Project Spec Template komplett aus. Analysiere unsere Konkurrenten und finde unseren 'Unfair Advantage'. Sei sehr spezifisch beim Revenue Model und der Go-to-Market Strategie."*
-3. **Das "Grill-Gespräch" (Refinement):**
-   - Akzeptiere den ersten Entwurf nicht sofort. "Grille" das Notebook:
-   - *Prompt 1:* `"Ist das Pricing Modell im Vergleich zur Konkurrenz im Dokument realistisch? Was ist die Zahlungsbereitschaft der zitierten Reddit-User?"*
-   - *Prompt 2:* `"Die Go-to-Market Strategie ist zu generisch. Wie bekommen wir basierend auf den Quellen unsere ersten 10 Kunden in Woche 1 mit 0€ Budget?"*
-   - *Prompt 3:* `"Erstelle mir einen detaillierten Feature-Gegenentwurf zu [Konkurrent X]. Was können wir in V1 weglassen, um schneller zu launchen?"*
+   - Save as PDFs: Websites of 3-5 competitors, pricing pages, feature lists.
+   - Copy top Reddit threads or Hacker News discussions about the specific problem.
+   - Upload everything into a new [NotebookLM](https://notebooklm.google.com/) project.
+2. **Initial Prompt:**
+   - Upload the empty `docs/project-spec.md` template to NotebookLM or paste its structure into the chat.
+   - *Prompt:* `"Based on our sources, fill out this Project Spec Template completely. Analyze our competitors and find our 'Unfair Advantage'. Be very specific about the Revenue Model and the Go-to-Market Strategy."*
+3. **The "Grilling" Session (Refinement):**
+   - Don't accept the first draft immediately. "Grill" the notebook:
+   - *Prompt 1:* `"Is the pricing model realistic compared to the competitors in the document? What is the willingness to pay of the cited Reddit users?"*
+   - *Prompt 2:* `"The Go-to-Market strategy is too generic. How do we get our first 10 customers in week 1 with a $0 budget based on the sources?"*
+   - *Prompt 3:* `"Create a detailed feature counter-proposal to [Competitor X]. What can we omit in V1 to launch faster?"*
 
 ### Option B: The Autonomous Approach (Claude Desktop/Code + MCP)
-Wenn du nicht manuell Quellen sammeln willst, lass eine KI mit **MCP (Model Context Protocol)** das Web für dich durchsuchen und die Spec autonom schreiben.
+If you don't want to gather sources manually, let an AI with **MCP (Model Context Protocol)** scour the web for you and write the spec autonomously.
 
-1. **Setup:** Nutze Claude Desktop oder Claude Code mit installierten MCP-Servern (z.B. `Brave Search MCP` oder `Puppeteer MCP`).
-2. **Der Mega-Prompt:** 
+1. **Setup:** Use Claude Desktop or Claude Code with installed MCP servers (e.g., `Brave Search MCP` or `Puppeteer MCP`).
+2. **The Mega-Prompt:** 
    ```text
-   Nutze das Brave Search MCP, um den Markt für [DEINE IDEE] zu analysieren.
-   1. Finde die Top 3 Konkurrenten und ihre Pricing-Modelle.
-   2. Finde heraus, was User an diesen Produkten hassen (Suche nach "site:reddit.com alternative zu [Konkurrent]").
-   3. Sobald du genug Daten hast, schreibe die Erkenntnisse streng nach dem Format der Datei `docs/project-spec.md` auf.
+   Use the Brave Search MCP to analyze the market for [YOUR IDEA].
+   1. Find the top 3 competitors and their pricing models.
+   2. Find out what users hate about these products (Search for "site:reddit.com alternative to [Competitor]").
+   3. Once you have enough data, write down the findings strictly following the format of the file `docs/project-spec.md`.
    ```
-3. **Iterative Verfeinerung:** Die KI kann direkt Folgeaufträge via MCP ausführen (*"Lies dir mal gezielt das Changelog von Konkurrent X durch und schau, was die zuletzt gebaut haben."*).
+3. **Iterative Refinement:** The AI can execute follow-up tasks directly via MCP (*"Read the changelog of Competitor X specifically and see what they built recently."*).
 
-*Ergebnis von Phase 1:* Eine zu 100% ausgefüllte `docs/project-spec.md`.
+*Result of Phase 1:* A 100% completed `docs/project-spec.md`.
 
 ---
 
 ## Phase 2: Factory Setup (Initialize)
 
-Sobald die Spec ("The Bible") steht, startest du die Maschine.
+Once the spec ("The Bible") is ready, you start the machine.
 
-1. Gehe auf das GitHub Template: `https://github.com/m4rc0z/indie-ai-factory`
-2. Klicke auf **"Use this template"** → Erstelle ein eigenes Repo (z.B. `mein-neues-saas`).
-3. Clone dein neues Repo lokal auf deinen Mac:
+1. Go to the GitHub Template: `https://github.com/m4rc0z/indie-ai-factory`
+2. Click **"Use this template"** → Create your own repo (e.g., `my-new-saas`).
+3. Clone your new repo locally on your Mac:
    ```bash
-   git clone git@github.com:DEIN_USER/dein-neues-saas.git
-   cd dein-neues-saas
+   git clone git@github.com:YOUR_USER/your-new-saas.git
+   cd your-new-saas
    ```
-4. Führe das Setup-Script aus:
+4. Run the setup script:
    ```bash
    ./setup.sh
    ```
-   *(Zieht die Skills, installiert Dependencies, baut die `.env.local` Vorlage).*
-5. **Kopiere deine fertige `project-spec.md` in den Ordner `docs/`.**
+   *(Pulls the skills, installs dependencies, builds the `.env.local` template).*
+5. **Copy your finished `project-spec.md` into the `docs/` folder.**
 
 ---
 
-## Phase 3: Architektur & Foundation (Claude Code)
+## Phase 3: Architecture & Foundation (Claude Code)
 
-Nutze *Claude Code* (`claude` im Terminal) für das extrem schnelle, token-effiziente Setup des Datenmodells und der Architektur.
+Use *Claude Code* (`claude` in the terminal) for the extremely fast, token-efficient setup of the data model and architecture.
 
-1. **Starte Claude Code:**
+1. **Start Claude Code:**
    ```bash
    claude
    ```
-2. **Architektur planen:**
-   `"Lies die docs/project-spec.md. Schreibe mir einen technischen Architektur-Plan (Route-Struktur, Supabase Tabellen, n8n Webhooks) in eine neue Datei .antigravity/artifacts/architecture.md. Beachte unser in CLAUDE.md definiertes Stack."`
-3. **Datenbank-Schema generieren:**
-   `"Erstelle basierend auf der architecture.md das SQL-Schema für Supabase unter supabase/schema.sql inkl. RLS Policies."`
+2. **Plan Architecture:**
+   `"Read docs/project-spec.md. Write a technical architecture plan (Route structure, Supabase tables, n8n webhooks) into a new file .antigravity/artifacts/architecture.md. Adhere to our stack defined in CLAUDE.md."`
+3. **Generate Database Schema:**
+   `"Based on architecture.md, create the SQL schema for Supabase under supabase/schema.sql including RLS Policies."`
 
 ---
 
 ## Phase 4: The Heavy Build Run (Antigravity Night Mission)
 
-Wenn die Architektur und das Spec stehen, übernimmt **Antigravity** den Heavy Lift (den Erstaufbau des UI/UX, Pages und logischen Komponenten).
+Once the architecture and spec are ready, **Antigravity** takes over the heavy lift (the initial build of the UI/UX, pages, and logical components).
 
-1. Öffne Cursor oder VS Code, triggere Antigravity:
+1. Open Cursor or VS Code, trigger Antigravity:
    ```text
-   Lade die project-spec.md und die architecture.md in dein Context-Window. 
-   Führe den Workflow /night-mission aus, um basierend auf diesen Dokumenten unser MVP zu bauen.
+   Load the project-spec.md and architecture.md into your Context Window. 
+   Run the workflow /night-mission to build our MVP based on these documents.
    ```
-2. **Was passiert nun?**
-   - Antigravity schreibt sich selbst einen `task_plan.md`.
-   - Baut das Design System (Farben, Tailwind).
-   - Generiert iterativ alle Komponenten und Seiten.
-   - Führt Auto-Commits aus und validiert das UX visuell.
-   - Du gehst ins Bett oder holst dir einen Kaffee. ☕
+2. **What happens next?**
+   - Antigravity writes its own `task_plan.md`.
+   - Builds the Design System (colors, Tailwind).
+   - Iteratively generates all components and pages.
+   - Executes auto-commits and visually validates the UX.
+   - You go to bed or grab a coffee. ☕
 
 ---
 
 ## Phase 5: The Daily Loop (Iterate & Ship)
 
-Wenn das MVP zu 80% steht, wechselst du in den schnellen Daily Workflow, optimiert durch unsere *Claude Code Best Practices*:
+When the MVP is 80% done, you switch to the fast Daily Workflow, optimized by our *Claude Code Best Practices*:
 
-- **Morgens (Status Check):**
-  Nutze den neuen Slash-Command über Claude Code:
+- **Morning (Status Check):**
+  Use the new slash command via Claude Code:
   ```bash
   /health
   ```
-- **Tagsüber (Bauen):**
-  Nutze Claude Code für Feature-Implementierungen mit der WHAT/WHERE/HOW/VERIFY Formel.
-  WICHTIG: Begrenze Tasks. Ein Feature = Ein Kontext. Sobald fertig:
+- **During the day (Building):**
+  Use Claude Code for feature implementations using the WHAT/WHERE/HOW/VERIFY formula.
+  IMPORTANT: Limit tasks. One Feature = One Context. Once finished:
   ```bash
   /compact
   ```
-- **Code Reviews einholen:**
-  Bevor du pushst, lass den Security Agent drüberschauen:
+- **Get Code Reviews:**
+  Before you push, let the Security Agent look over it:
   ```bash
-  /agent reviewer "Check ob die neue Stripe-Webhook Route sicher ist."
+  /agent reviewer "Check if the new Stripe webhook route is secure."
   ```
-- **Abends (Handoff):**
-  Mache reinen Tisch für den nächsten Tag oder für eine weitere Night Mission:
+- **Evening (Handoff):**
+  Clean up for the next day or for another Night Mission:
   ```bash
   /handoff
   ```
 
 ---
-*Die Indie AI Factory stellt sicher, dass du nie am leeren Blatt startest, architektonische Best-Practices erzwingst und KI-Ressourcen (Tokens, Context Window) maximal effizient nutzt.*
+*The Indie AI Factory ensures you never start with a blank page, enforces architectural best practices, and uses AI resources (tokens, context window) globally with maximum efficiency.*
