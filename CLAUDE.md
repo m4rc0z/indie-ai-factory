@@ -9,7 +9,7 @@
 ## 🏗️ Tech Stack
 
 > **This section is populated by the Architect Agent in Phase 4.**
-> The template ships stack-agnostic. The `/agent architect` chooses the optimal technologies
+> The template ships stack-agnostic. The Architect subagent chooses the optimal technologies
 > based on the project's `docs/project-spec.md` — optimizing for **cost-efficiency**, **solo-dev maintainability**, and **time-to-market**.
 
 | Layer | Technology | Chosen Because |

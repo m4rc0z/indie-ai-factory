@@ -262,7 +262,7 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
   ```
 - **Get Code Reviews:**
   ```bash
-  /agent reviewer "Check if the new payment webhook route is secure."
+  Use the reviewer subagent to check if the new payment webhook route is secure.
   ```
 - **Evening (Handoff):**
   ```bash
