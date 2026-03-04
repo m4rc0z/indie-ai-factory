@@ -127,10 +127,14 @@ NotebookLM does NOT hallucinate — it only answers based on your uploaded docum
 Now that you've pre-digested the material in NotebookLM, unleash the **Researcher Agent** to write the formal validation.
 
 **Option A: With NotebookLM Link (Recommended)**
-```bash
+```text
 claude
-> Führe den Prozess in .claude/commands/research.md aus. Meine Idee: "A lead-qualification tool for German landscapers." NotebookLM: https://notebooklm.google.com/notebook/YOUR_ID
+> Use the researcher subagent to analyze the market for "A lead-qualification tool for German landscapers." NotebookLM: https://notebooklm.google.com/notebook/YOUR_ID
 ```
+
+> **⚠️ IMPORTANT:** Do NOT use `/agent researcher` or `/research` — these are NOT slash commands!
+> Agents are invoked by asking Claude to "Use the [name] subagent to..." — this triggers
+> the Task tool which properly loads the agent's frontmatter (including model selection).
 
 The Researcher Agent will:
 1. Connect to your NotebookLM notebook and exhaust every source in it.
@@ -144,9 +148,9 @@ The Researcher Agent will:
 5. If GO: Proceed to Phase 2 automatically.
 
 **Option B: Web-Only (No NotebookLM)**
-```bash
+```text
 claude
-> Führe den Prozess in .claude/commands/research.md aus. Meine Idee: "A lead-qualification tool for German landscapers."
+> Use the researcher subagent to analyze the market for "A lead-qualification tool for German landscapers."
 ```
 The agent will use Brave Search MCP exclusively to find competitors, pricing, and pain points.
 
@@ -200,13 +204,13 @@ This is where the magic happens. The **Architect Agent** reads your project spec
 
 > **Why not hardcode the tech stack?** Every project is different. A simple lead-gen form doesn't need the same stack as a real-time dashboard. The Architect Agent evaluates your specific needs and picks the best tools.
 
-1. **Start Claude Code:**
+1. **Start Claude Code (skipping permissions so the Architect can write files uninterrupted):**
    ```bash
-   claude
+   claude --dangerously-skip-permissions
    ```
 2. **Run the Architect Agent:**
-   ```
-   /agent architect "Read docs/project-spec.md. Design the architecture and select the optimal tech stack for this project."
+   ```text
+   Use the architect subagent to read docs/project-spec.md, design the system architecture, and select the optimal tech stack.
    ```
 3. **What happens automatically:**
    - Reads your project spec and validation report
@@ -276,7 +280,7 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
 | 1: Deep Dive | NotebookLM + Claude `/research` | NotebookLM link (loaded with sources) | `docs/validation-report.md` |
 | 2: The Bible | Researcher Agent (auto) + Human review | Validation report | `docs/project-spec.md` |
 | 3: Setup | `./setup.sh` | Template repo | Initialized project (no deps yet) |
-| 4: Architecture | Claude `/agent architect` | `project-spec.md` | `architecture.md` + `schema.sql` + updated `CLAUDE.md` |
+| 4: Architecture | Claude Code (architect.md) | `project-spec.md` | `architecture.md` + `schema.sql` + updated `CLAUDE.md` |
 | 5: Night Mission | Antigravity `/night-mission` | Spec + Architecture | Working MVP |
 | 6: Daily Loop | Claude Code + Antigravity | Feature tickets | Production app |
 
