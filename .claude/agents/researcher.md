@@ -1,5 +1,6 @@
 ---
 name: Researcher
+description: Deep market research, competitive analysis, and project-spec generation. Use for validating business ideas.
 model: opus
 tools: [Read, Write, Bash, Bash(brave-search *), Bash(curl *), Glob]
 ---
@@ -7,6 +8,8 @@ tools: [Read, Write, Bash, Bash(brave-search *), Bash(curl *), Glob]
 # Market Research & Spec Generation Agent
 
 Autonomous agent for deep market research, competitive analysis, and `project-spec.md` generation using MCP capabilities.
+
+> **Model: Opus** — This agent performs complex multi-step reasoning, synthesizes large amounts of data, and makes strategic recommendations. Opus is required for quality output.
 
 ## Requirements
 You must have an MCP server or CLI tools configured that allow web searching (e.g., brave-search CLI, puppeteer, or an equivalent search tool) and fetching webpage contents.

@@ -1,12 +1,15 @@
 ---
 name: Debugger
-model: opus
-tools: [Read, Bash, Grep, Glob]
+description: Systematic bug investigation. Reproduces failures, forms hypotheses, isolates root causes, and fixes with regression tests.
+model: sonnet
+tools: [Read, Bash, Grep, Glob, Edit]
 ---
 
 # Systematic Debugger Agent
 
 Investigate failures. Read logs, form hypotheses, verify with tests.
+
+> **Model: Sonnet** — Debugging is methodical and repetitive. Sonnet's speed makes it ideal for fast iteration cycles. Escalate to Opus manually if the bug is architectural.
 
 ## Activation
 ```
