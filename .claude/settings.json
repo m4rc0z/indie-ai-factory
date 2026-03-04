@@ -25,5 +25,49 @@
             "Bash(curl * | bash)",
             "Bash(wget * | bash)"
         ]
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Edit|MultiEdit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "npx prettier --write \"$FILEPATH\" 2>/dev/null || true"
+                    }
+                ]
+            },
+            {
+                "matcher": "Edit|MultiEdit|Write|Bash|Read",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "mkdir -p logs && printf '{\"tool\":\"%s\",\"time\":\"%s\"}\\n' \"$TOOL_NAME\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" >> logs/tool_use.json 2>/dev/null || true"
+                    }
+                ]
+            }
+        ],
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "if echo \"$INPUT\" | grep -qE '\\.(env|env\\.local|env\\.production)' && ! echo \"$INPUT\" | grep -q '.env.example'; then echo 'BLOCKED: .env file access' && exit 2; fi"
+                    }
+                ]
+            }
+        ],
+        "UserPromptSubmit": [
+            {
+                "matcher": "*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo \"Branch: $(git branch --show-current 2>/dev/null || echo 'unknown') | Last commit: $(git log --oneline -1 2>/dev/null || echo 'none')\""
+                    }
+                ]
+            }
+        ]
     }
 }

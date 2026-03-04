@@ -193,8 +193,24 @@ Once the spec ("The Bible") is ready, you start the machine.
    ```
    *(Pulls the skills, makes hooks executable, creates `.env.local` template.)*
 5. **Copy your finished `project-spec.md` and `validation-report.md` into the `docs/` folder.**
+6. **Set up Playwright MCP** (for browser-based E2E testing in Phase 6):
+   ```bash
+   claude mcp add playwright -s user -- npx -y @playwright/mcp@latest
+   ```
 
 > **Note:** Dependencies are NOT installed yet. The Architect Agent in Phase 4 will first select the optimal tech stack for your project.
+
+### Hooks (Pre-Configured)
+
+The template ships with **zero-token-cost automation hooks** in `.claude/settings.json`:
+
+| Hook | Trigger | What It Does |
+|:-----|:--------|:-------------|
+| **PostToolUse** (Edit) | After every file edit | Auto-formats with Prettier |
+| **PreToolUse** (Bash) | Before any bash command | Blocks `.env` file access (security) |
+| **UserPromptSubmit** | When you send a prompt | Injects current git branch + last commit |
+
+These run automatically outside the LLM — they consume zero tokens and execute instantly.
 
 ---
 
@@ -246,28 +262,115 @@ Once the architecture and spec are ready, **Antigravity** takes over the heavy l
 
 ---
 
-## Phase 6: The Daily Loop (Iterate & Ship)
+## Phase 6: The Iterative Loop (Build → Test → Brainstorm → Repeat)
 
-When the MVP is 80% done, you switch to the fast Daily Workflow:
+Once the MVP is standing, you enter the **autonomous iteration loop**. This is where the product gets polished from "works" to "ships."
 
-- **Morning (Status Check):**
-  ```bash
-  /health
-  ```
-- **During the day (Building):**
-  Use Claude Code for feature implementations using the WHAT/WHERE/HOW/VERIFY formula.
-  One Feature = One Context. Once finished:
-  ```bash
-  /compact
-  ```
-- **Get Code Reviews:**
-  ```bash
-  Use the reviewer subagent to check if the new payment webhook route is secure.
-  ```
-- **Evening (Handoff):**
-  ```bash
-  /handoff
-  ```
+```
+┌──────────────────────────────────────────────────┐
+│           Phase 6: Iterative Loop                │
+│                                                  │
+│  1. QA Tester Agent → docs/qa-report.md          │
+│     (brainstorms test scenarios, finds bugs)     │
+│              ↓                                   │
+│  2. Bug Fixer Agent → auto-fixes bugs            │
+│     (TDD: write test → fix → verify → commit)    │
+│              ↓                                   │
+│  3. Product Thinker Agent                        │
+│     → docs/next-features.md                      │
+│     (proposes next features, prioritized)        │
+│              ↓                                   │
+│  4. YOU decide: Which feature next?              │
+│              ↓                                   │
+│  5. Claude Code → Implements the feature         │
+│              ↓                                   │
+│  └──────── Back to 1. ───────────────────────┘   │
+└──────────────────────────────────────────────────┘
+```
+
+### Step 6.1: QA Testing + E2E Test Writing (Find What's Broken)
+
+Start Claude Code and run the QA Tester agent:
+
+```bash
+claude --dangerously-skip-permissions
+```
+```text
+Use the qa-tester subagent to test the application and create docs/qa-report.md
+```
+
+The QA Tester will:
+- **Brainstorm user test scenarios** before testing anything
+- **Write persistent Playwright E2E tests** in `e2e/` that stay in the codebase
+- Run all tests (unit + E2E) and document results
+- Systematically test everything that can't be automated (visual, performance)
+- Check responsive design, accessibility, and security
+- Write `docs/qa-report.md` with prioritized bugs
+
+> **Key Insight**: E2E tests make the feedback loop **10x faster**. After the first QA run,
+> every subsequent change can be verified with `npx playwright test` in seconds instead of
+> minutes of manual clicking.
+
+### Step 6.2: Auto-Fix Bugs (Bug Fixer Agent)
+
+If the QA report found bugs, let the Bug Fixer handle them autonomously:
+
+```text
+Use the bug-fixer subagent to resolve the issues in docs/qa-report.md
+```
+
+The Bug Fixer will:
+- Read `docs/qa-report.md` and triage bugs by severity
+- For each bug: write a failing test → fix the code → verify → commit
+- Mark each bug as ✅ FIXED in the QA report
+- One bug = one commit (clean git history)
+
+### Step 6.3: Feature Brainstorming (What Should We Build Next?)
+
+Run the Product Thinker agent:
+
+```text
+Use the product-thinker subagent to brainstorm new features based on the project spec
+```
+
+The Product Thinker will:
+- Compare the spec vs. what's actually built (gap analysis)
+- Optionally research competitor features via web search
+- Score features using the ICE framework (Impact × Confidence × Ease)
+- Write `docs/next-features.md` with 3 prioritized feature tickets
+
+### Step 6.4: You Decide (The Only Manual Step)
+
+Read both reports and pick your next action:
+- **Bug from QA report?** → Tell Claude Code to fix it.
+- **Feature from next-features.md?** → Tell Claude Code to build it.
+- **Your own idea?** → Describe it to Claude Code.
+
+Use the WHAT/WHERE/HOW/VERIFY formula:
+```text
+WHAT: Add PDF download button to the price estimate page
+WHERE: src/app/price-estimate/page.tsx + src/lib/pdf/generator.ts (new)
+HOW: Use @react-pdf/renderer. Generate a branded PDF with the estimate details.
+VERIFY: npm run build && npm run test
+```
+
+### Step 6.5: Verify (Close the Loop)
+
+After Claude Code implements the change:
+1. Run QA Tester again to verify the fix/feature works
+2. Commit: `git commit -m "feat: add PDF download for estimates"`
+3. Back to Step 6.1
+
+### Daily Workflow Commands
+
+| Time | Action | Command |
+|:-----|:-------|:--------|
+| Morning | Check status | `/health` |
+| Morning | Run QA | `/agent qa-tester` |
+| During day | Build features | WHAT/WHERE/HOW/VERIFY prompts |
+| During day | Clean context | `/compact` |
+| Evening | Get review | `/agent qa-tester` (verify) |
+| Evening | Handoff | `/handoff` |
 
 ---
 
@@ -280,9 +383,75 @@ When the MVP is 80% done, you switch to the fast Daily Workflow:
 | 1: Deep Dive | NotebookLM + Claude `/research` | NotebookLM link (loaded with sources) | `docs/validation-report.md` |
 | 2: The Bible | Researcher Agent (auto) + Human review | Validation report | `docs/project-spec.md` |
 | 3: Setup | `./setup.sh` | Template repo | Initialized project (no deps yet) |
-| 4: Architecture | Claude Code (architect.md) | `project-spec.md` | `architecture.md` + `schema.sql` + updated `CLAUDE.md` |
+| 4: Architecture | Claude Code (`/agent Architect`) | `project-spec.md` | `architecture.md` + `schema.sql` + updated `CLAUDE.md` |
 | 5: Night Mission | Antigravity `/night-mission` | Spec + Architecture | Working MVP |
-| 6: Daily Loop | Claude Code + Antigravity | Feature tickets | Production app |
+| 6a: QA | Claude Code (`/agent qa-tester`) | Running app | `docs/qa-report.md` |
+| 6b: Brainstorm | Claude Code (`/agent product-thinker`) | Code + Spec + QA report | `docs/next-features.md` |
+| 6c: Build | Claude Code | Feature ticket | Implemented feature |
+| 6d: Verify | Claude Code (`/agent qa-tester`) | Updated app | Updated `docs/qa-report.md` |
+
+---
+
+## Advanced Tools & Patterns
+
+### Playwright MCP (Browser Testing)
+
+The Playwright MCP server lets Claude Code control a real browser — navigate pages, fill forms, take screenshots, and run E2E tests.
+
+```bash
+# Setup (one-time, already included in Phase 3)
+claude mcp add playwright -s user -- npx -y @playwright/mcp@latest
+```
+
+This powers the QA Tester agent's ability to write persistent E2E tests.
+
+### GSD Plugin (Context-Rot Prevention)
+
+For large, multi-phase features, use the **GSD (Get Shit Done)** plugin to prevent context degradation:
+
+```bash
+npx get-shit-done-cc@latest
+```
+
+GSD spawns specialized sub-agents with **fresh context** for each task. Each sub-agent gets the full 200K context window instead of sharing a degraded one. Use it when a single Claude Code session isn't enough.
+
+### OpusPlan Mode
+
+Use **Opus for planning** and **Sonnet for execution** — the best of both worlds:
+- Start with `Use the architect subagent to...` (Opus thinks through architecture)
+- Then `Use the bug-fixer subagent to...` (Sonnet executes cheaply and fast)
+
+Our agents already follow this pattern: Architect + Researcher use Opus, everything else uses Sonnet.
+
+### Multi-Instance Workflows
+
+You can run 2-3 Claude Code instances in parallel on independent tasks:
+
+| Terminal | Task | Working On |
+|:---------|:-----|:-----------|
+| Terminal 1 | Bug fixing | `src/components/` |
+| Terminal 2 | New feature | `src/app/new-page/` |
+| Terminal 3 | Test expansion | `e2e/` |
+
+Works best when tasks touch **different files**. Merge carefully when they overlap.
+
+---
+
+## Available Agents
+
+All agents are defined in `.claude/agents/` and are natively available in Claude Code via `/agent [name]`:
+
+| Agent | Purpose | Model | When to Use |
+|:------|:--------|:------|:------------|
+| **Architect** | Tech stack selection & system design | Opus | Phase 4 (once per project) |
+| **Researcher** | Market research & spec generation | Opus | Phase 1-2 (once per project) |
+| **Product Thinker** | Feature brainstorming & prioritization | Sonnet | Phase 6 (every iteration) |
+| **QA Tester** | E2E test writing, systematic testing & bug hunting | Sonnet | Phase 6 (every iteration) |
+| **Bug Fixer** | Autonomous bug fixing with TDD | Sonnet | Phase 6 (after QA) |
+| **Debugger** | Hypothesis-driven debugging | Sonnet | Anytime (on specific bugs) |
+| **Reviewer** | Security-focused code review | Sonnet | Before deploy |
+| **Ideator** | Niche discovery & idea brainstorming | Sonnet | Phase 0 (new products) |
 
 ---
 *The Indie AI Factory ensures you never start with a blank page, enforces architectural best practices, and uses AI resources (tokens, context window) globally with maximum efficiency.*
+
