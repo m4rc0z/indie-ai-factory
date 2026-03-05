@@ -248,6 +248,8 @@ This is where the magic happens. The **Architect Agent** reads your project spec
 
 Once the architecture and spec are ready, **Antigravity** takes over the heavy lift.
 
+> **Prefer working purely in the terminal?** You can bypass Antigravity and do this entire phase (and Phase 6) strictly with Claude Code. See the [Claude Code-Only Workflow](claude-only-workflow.md) guide.
+
 1. Open Cursor or VS Code, trigger Antigravity:
    ```text
    Load the project-spec.md and architecture.md into your Context Window. 
