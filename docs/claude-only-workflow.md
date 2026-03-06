@@ -49,7 +49,30 @@ Since Claude cannot see the rendered frontend, act as its eyes.
 
 ## Phase 6: QA & Polish (Claude Code Edition)
 
-Without Antigravity's visual capabilities, we enforce quality through **Tests** and **Subagents**.
+Without Antigravity's built-in visual browser, we enforce visual quality through **MCP Servers** and **Local Skills**.
+
+### Step 6.0: The Visual Hack (Puppeteer MCP)
+To give Claude Code "eyes", you must install the official Puppeteer MCP server. This allows Claude to actually navigate your local dev server, take screenshots, and analyze the CSS.
+
+```bash
+claude mcp add puppeteer npx -y @modelcontextprotocol/server-puppeteer
+```
+
+### Step 6.1: Visual Design Validation
+Once your dev server is running (`npm run dev`), instruct Claude to act as a rigorous design critic using your local skills.
+
+```text
+Load the skill .agent/skills/awesome-collection/skills/ui-ux-pro-max/SKILL.md. 
+Navigate to localhost:3000 using puppeteer, take a screenshot, and critically evaluate the design based on the skill's rules. Then, fix the Tailwind classes to improve contrast and spacing.
+```
+
+### Step 6.2: Visual QA & Bug Hunting
+For rigorous layout testing (e.g., checking mobile responsiveness or layout shifts):
+
+```text
+Load the skill .agent/skills/awesome-collection/skills/ui-visual-validator/SKILL.md.
+Take a screenshot of localhost:3000/pricing and strictly verify if there are any visual bugs, layout shifts, or accessibility issues.
+```
 
 ### Step 6.1: Security & Code Review
 Before launching, have the Reviewer subagent check your codebase.
@@ -80,8 +103,8 @@ Use the debugger subagent. I am getting a 500 error when clicking 'Submit' on th
 | Feature | Antigravity (Default) | Claude Code-Only |
 | :--- | :--- | :--- |
 | **Pacing** | One massive "Night Mission" prompt | Iterative, ticket-by-ticket approach |
-| **Visual QA** | Autonomous (Takes screenshots, fixes CSS) | Human-in-the-loop (You describe visual issues) |
-| **Testing** | Visual + Functional | Strictly Code + Playwright/Vitest |
+| **Visual QA** | Built-in browser subagent | Puppeteer MCP + Local UI Skills |
+| **Testing** | Autonomous clicking + Playwright | Code + Playwright/Vitest (with MCP) |
 | **Context Tooling** | Custom IDE extensions | Native `/compact` and `/.claude` config |
 
-**Conclusion:** The Claude Code-only route is often *faster* for pure backend/logic-heavy building, but requires slightly more manual direction for CSS and layout perfection.
+**Conclusion:** The Claude Code-only route is often *faster* for pure backend/logic-heavy building. With the addition of the Puppeteer MCP server, it can now nearly match Antigravity's visual QA capabilities, bridging the final gap between terminal and browser.
